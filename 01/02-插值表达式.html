@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!--
+    插值表达式，vue的一种模板语法
+    作用：利用表达式进行插值渲染
+    语法{{ }}
+
+    注意点：
+    1. 使用的数据要存在
+    2. 支持表达式，不是语句if，for
+    3. 不能再标签属性使用插值表达式
+  -->
+  <div id="app">
+{{ nickname}}
+{{ nickname.toUpperCase()}}
+{{ age>16? '成年':'未成年'}}
+{{ friend.name}}
+<!-- 这个是错的。标签里不能用属性，要用要用v-bind -->
+<p title="{{nickname}}">{{nickname}}</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script>
+    const app =new Vue({
+      el:'#app',
+      data:{
+        nickname:'tony',
+        age:18,
+        friend:{
+          name:'jackson',
+          desc:'vue'
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>
