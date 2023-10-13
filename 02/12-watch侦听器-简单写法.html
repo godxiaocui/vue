@@ -74,7 +74,7 @@
       <!-- 条件选择框 -->
       <div class="query">
         <span>翻译成的语言：</span>
-        <select>
+        <select v-model="obj.lang" >
           <option value="italy">意大利</option>
           <option value="english">英语</option>
           <option value="german">德语</option>
@@ -88,7 +88,7 @@
           <span><i>⌨️</i>文档翻译</span>
         </div>
         <div class="output-wrap">
-          <div class="transbox">mela</div>
+          <div class="transbox">{{ result }}</div>
         </div>
       </div>
     </div>
@@ -105,13 +105,57 @@
       const app = new Vue({
         el: '#app',
         data: {
-          words: '',
-          // obj: {
-          //   words: ''
-          // }
+      //  words: '',
+          obj: {
+            words: '',
+            lang:'italy'
+          },
+          result:'',
+          timer:null//可以不写，渲染无关可以不写
         },
         // 具体讲解：(1) watch语法 (2) 具体业务实现
-       
+       watch:{
+        // 监控data中words的变化情况
+        // 该方法会在数据据变化时调用执行
+        // //防抖,需要关闭延迟器
+        obj:{
+          //深度监控
+          deep:true,
+          immediate:true, //默认加载页面时立即触发一次，改变触发
+          handler(newValue){
+                clearTimeout( this.timer)
+          this.timer=setTimeout(async ()=>{
+          const res= await axios({
+            url:'https://applet-base-api-t.itheima.net/api/translate',
+            params:newValue
+            
+          })
+          this.result=res.data.data
+            console.log(res.data.data)
+        },1000)
+   
+          }
+        }
+
+
+
+
+
+        // 'obj.words'(newValue,oldValue){
+        //   clearTimeout( this.timer)
+        //   this.timer=setTimeout(async ()=>{
+        //   const res= await axios({
+        //     url:'https://applet-base-api-t.itheima.net/api/translate',
+        //     params:{
+        //       words:newValue
+        //     }
+        //   })
+        //   this.result=res.data.data
+        //     console.log(res.data.data)
+        // },1000)
+   
+        // }
+       }
       })
     </script>
   </body>

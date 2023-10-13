@@ -19,7 +19,7 @@
         <span>购物车</span>
       </div>
       <!-- 购物车主体 -->
-      <div class="main" v-if="fruitList.length>0">
+      <div class="main" v-if="fruitList.length > 0">
         <div class="table">
           <!-- 头部 -->
           <div class="thead">
@@ -34,44 +34,47 @@
           </div>
           <!-- 身体 -->
           <div class="tbody">
-            <div v-for="(item,index) in fruitList" :key="item.id" class="tr" :class="{ active:item.isChecked}">
+            <div v-for="(item, index) in fruitList" :key="item.id" class="tr" :class="{ active: item.isChecked }">
               <div class="td"><input type="checkbox" v-model="item.isChecked" /></div>
               <div class="td"><img :src="item.icon" alt="" /></div>
               <div class="td">{{ item.price }}</div>
               <div class="td">
                 <div class="my-input-number">
-                  <button :disabled="item.num<=1" class="decrease" @click="sub(item.id)"> - </button>
+                  <button :disabled="item.num <= 1" class="decrease" @click="sub(item.id)"> - </button>
                   <span class="my-input__inner">{{ item.num }}</span>
                   <button class="increase" @click="add(item.id)"> + </button>
                 </div>
               </div>
-              <div class="td">{{ item.num*item.price }}</div>
-              <div class="td" @click="del(item.id)"><button>删除</button></div>
+              <div class="td">{{ item.num * item.price }}</div>
+              <div class="td"><button @click="del(item.id)">删除</button></div>
             </div>
-
           </div>
         </div>
         <!-- 底部 -->
         <div class="bottom">
           <!-- 全选 -->
-          <label class="check-all" >
+          <label class="check-all">
             <input type="checkbox" v-model="isAll"/>
             全选
           </label>
           <div class="right-box">
             <!-- 所有商品总价 -->
-            <span class="price-box">总价&nbsp;&nbsp;:&nbsp;&nbsp;¥&nbsp;<span class="price">{{ totalPrice}}</span></span>
+            <span class="price-box">总价&nbsp;&nbsp;:&nbsp;&nbsp;¥&nbsp;<span class="price">24</span></span>
             <!-- 结算按钮 -->
-            <button class="pay">{{ totalCount }}</button>
+            <button class="pay">结算( 6 )</button>
           </div>
         </div>
       </div>
       <!-- 空车 -->
       <div class="empty" v-else>🛒空空如也</div>
     </div>
-    <script src="../vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script>
-      const defaultArr=[
+      const app = new Vue({
+        el: '#app',
+        data: {
+          // 水果列表
+          fruitList: [
             {
               id: 1,
               icon: 'http://autumnfish.cn/static/火龙果.png',
@@ -107,30 +110,17 @@
               num: 20,
               price: 34,
             },
-          ]
-      const app = new Vue({
-        el: '#app',
-        data: {
-          // 水果列表
-        fruitList: JSON.parse(localStorage.getItem('list')) || defaultArr
+          ],
         },
-        computed:{
-          // isAll(){
-          //   //判断是否全部选中和list中的每一个去匹配
-          //   return this.fruitList.every(item=> item.isChecked === true)
-          //  }
-          // 计算属性要写get和set方法
-        
-            // get(){
-            //   return this.fruitList.every(item=> item.isChecked === true)
-            // }
-            // ,
-            // set(value){
-            //  this.fruitList.forEach(element => {
-            //   element.isChecked=value
-            //   })
-            // }}
-            isAll: {
+        computed: {
+          // 默认计算属性：只能获取不能设置，要设置需要写完整写法
+          // isAll () {
+          //   // 必须所有的小选框都选中，全选按钮才选中 → every
+          //   return this.fruitList.every(item => item.isChecked)
+          // }
+          
+          // 完整写法 = get + set
+          isAll: {
             get () {
               return this.fruitList.every(item => item.isChecked)
             },
@@ -138,51 +128,23 @@
               // 基于拿到的布尔值，要让所有的小选框 同步状态
               this.fruitList.forEach(item => item.isChecked = value)
             }
-          },
-          totalCount(){
-            return this.fruitList.reduce((sum,item)=>{
-              if (item.isChecked){
-                return sum+item.num
-              }else{
-                return sum
-              }
-            },0)
-          },
-          totalPrice(){
-            return this.fruitList.reduce((sum,item)=>{
-              if (item.isChecked){
-                return sum+item.num*item.price
-              }else{
-                return sum
-              }
-            },0)
-          }
-          
-        }
-        ,
-        methods:{
-          del(id){
-            this.fruitList= this.fruitList.filter((item)=> item.id!=id)
-          },
-          add(id){
-            // 找到数组中的值,引用类型可以直接修改
-            const fruit=this.fruitList.find((item)=>item.id===id)
-            console.log(fruit)
-            fruit.num++
-          },
-          sub(id){
-            const fruit=this.fruitList.find((item)=>item.id===id)
-            fruit.num--
           }
         },
-        watch: {
-          fruitList: {
-            deep: true,
-            handler (newValue) {
-              console.log(newValue)
-              // 需要将变化后的 newValue 存入本地 （转JSON）
-              localStorage.setItem('list', JSON.stringify(newValue))
-            }
+        methods: {
+          del (id) {
+            this.fruitList = this.fruitList.filter(item => item.id !== id)
+          },
+          add (id) {
+            // 1. 根据 id 找到数组中的对应项 → find
+            const fruit = this.fruitList.find(item => item.id === id)
+            // 2. 操作 num 数量
+            fruit.num++
+          },
+          sub (id) {
+            // 1. 根据 id 找到数组中的对应项 → find
+            const fruit = this.fruitList.find(item => item.id === id)
+            // 2. 操作 num 数量
+            fruit.num--
           }
         }
       })
