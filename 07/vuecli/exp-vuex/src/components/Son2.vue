@@ -10,7 +10,7 @@
       <hr>
       <!-- 访问模块中的state-->
       <div> {{ user }}</div>
-      <div> {{ setting }}</div>
+      <div> {{ set ting }}</div>
     </div>
   </template>
   
