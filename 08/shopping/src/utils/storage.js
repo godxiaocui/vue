@@ -3,7 +3,8 @@ const INFO_KEY = 'hm_shopping_info'
 // 获取个人信息
 export const getInfo = () => {
     const res = localStorage.getItem(INFO_KEY)
-    return res ? Json.parse(res) : {
+    console.log(res)
+    return res ? JSON.parse(res) : {
         token: '',
         userId: ''
     }
