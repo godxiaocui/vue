@@ -1,4 +1,5 @@
 const INFO_KEY = 'hm_shopping_info'
+const HISTORY_KEY = 'hm_history_list'
 
 // 获取个人信息
 export const getInfo = () => {
@@ -19,4 +20,16 @@ export const setInfo = (obj) => {
 // 移除个人信息
 export const removeInfo = () => {
     localStorage.removeItem(INFO_KEY)
+}
+
+//设置我们的个人信息
+export const setHistory =(arr)=>{
+    localStorage.setItem(HISTORY_KEY,JSON.stringify(arr))
+}
+
+
+// 获取个人信息
+export const getHistory= ()=>{
+    return localStorage.getItem(HISTORY_KEY)? JSON.parse(localStorage.getItem(HISTORY_KEY)):[]
+
 }

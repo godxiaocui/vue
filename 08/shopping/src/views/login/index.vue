@@ -104,9 +104,10 @@ export default {
       }
       const res=await codeLogin(this.mobile,this.msgCode);
       this.$store.commit('user/setUserInfo',res.data)
-      console.log(res)
-      this.$router.push('/')
-    this.$toast('登录成功')
+      this.$toast('登录成功')
+      // 判断有无回跳地址
+      const url= this.$route.query.backurl || '/'
+      this.$router.replace(url)
     }
   }
 }
