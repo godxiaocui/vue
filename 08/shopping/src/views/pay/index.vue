@@ -97,7 +97,7 @@
 
 <script>
 import { getAddressList } from '@/api/address'
-import { checkOrder ,submitOrder} from '@/api/order'
+import { checkOrder ,} from '@/api/order'
 import loginConfirm from '@/mixins/loginConfirm'
 export default {
   name: 'PayIndex',
